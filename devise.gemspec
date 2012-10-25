@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency("warden", "~> 1.2.1")
-  s.add_dependency("orm_adapter_rails4_fix", "~> 0.4")
+  s.add_dependency("orm_adapter_rails4_fix", "~> 0.4.1")
   s.add_dependency("bcrypt-ruby", "~> 3.0")
   s.add_dependency("railties", ">= 3.1")
 end
