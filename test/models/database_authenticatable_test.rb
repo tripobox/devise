@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_models'
 require 'digest/sha1'
 
 class DatabaseAuthenticatableTest < ActiveSupport::TestCase
@@ -10,6 +11,17 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal email, user.email
     user.save!
     assert_equal email.downcase, user.email
+  end
+
+  test 'should downcase case insensitive keys that refer to virtual attributes when saving' do
+    email        = 'Foo@Bar1.com'
+    confirmation = 'Foo@Bar1.com'
+    attributes   = valid_attributes(:email => email, :email_confirmation => confirmation)
+    user = UserWithVirtualAttributes.new(attributes)
+
+    assert_equal confirmation, user.email_confirmation
+    user.save!
+    assert_equal confirmation.downcase, user.email_confirmation
   end
 
   test 'should remove whitespace from strip whitespace keys when saving' do
@@ -106,6 +118,13 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
       :password => 'pass4321', :password_confirmation => 'pass4321')
     assert user.reload.valid_password?('12345678')
     assert_match "is invalid", user.errors[:current_password].join
+  end
+
+  test 'should not change encrypted password when it is invalid' do
+    user = create_user
+    assert_not user.update_with_password(:current_password => 'other',
+      :password => 'pass4321', :password_confirmation => 'pass4321')
+    assert_not user.encrypted_password_changed?
   end
 
   test 'should add an error to current password when it is blank' do

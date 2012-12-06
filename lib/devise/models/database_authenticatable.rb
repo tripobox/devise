@@ -64,6 +64,7 @@ module Devise
         result = if valid_password?(current_password)
           update_attributes(params, *options)
         else
+          params.delete(:password)
           self.assign_attributes(params, *options)
           self.valid?
           self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
@@ -75,7 +76,7 @@ module Devise
       end
 
       # Updates record attributes without asking for the current password.
-      # Never allows to change the current password. If you are using this
+      # Never allows a change to the current password. If you are using this
       # method, you should probably override this method to protect other
       # attributes you would not like to be updated without a password.
       #

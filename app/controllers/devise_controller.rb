@@ -168,7 +168,7 @@ MESSAGE
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
     options = devise_i18n_options(options) if respond_to?(:devise_i18n_options, true)
-    message = I18n.t("#{resource_name}.#{kind}", options)
+    message = I18n.t("#{options[:resource_name]}.#{kind}", options)
     flash[key] = message if message.present?
   end
 
@@ -180,13 +180,5 @@ MESSAGE
     respond_with(*args) do |format|
       format.any(*navigational_formats, &block)
     end
-  end
-
-  def request_format
-    @request_format ||= request.format.try(:ref)
-  end
-
-  def is_navigational_format?
-    Devise.navigational_formats.include?(request_format)
   end
 end

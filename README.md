@@ -245,7 +245,7 @@ Remember that Devise uses flash messages to let users know if sign in was succes
 Devise also ships with default routes. If you need to customize them, you should probably be able to do it through the devise_for method. It accepts several options like :class_name, :path_prefix and so on, including the possibility to change path names for I18n:
 
 ```ruby
-devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
+devise_for :users, :path => "auth", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
 ```
 
 Be sure to check `devise_for` documentation for details.
@@ -339,7 +339,13 @@ There are two things that is important to keep in mind:
 
 ### Omniauth
 
-Devise comes with Omniauth support out of the box to authenticate from other providers. You can read more about Omniauth support in the wiki:
+Devise comes with Omniauth support out of the box to authenticate with other providers. To use it, just specify your omniauth configuration in `config/initializers/devise.rb`:
+
+```ruby
+config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
+```
+
+You can read more about Omniauth support in the wiki:
 
 * https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
 
